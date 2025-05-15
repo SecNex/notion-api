@@ -1,2 +1,8 @@
 __pycache__
 .env
+
+index.py
+index.pyc
+
+dist/
+build/
