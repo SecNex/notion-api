@@ -4,17 +4,31 @@ This is a wrapper for the Notion API. You can use it to create, update, and dele
 
 ## Features
 
-### Pages
-
-- [x] Create a page
-- [x] Search for pages
-- [x] Get a page by id
-- [ ] Update a page
-- [ ] Delete a page
-
 ### Blocks
 
-- [x] Create a block
+- [x] Paragraph
+- [x] Callout
+- [x] Headings
+- [x] Code
+- [ ] Image
+- [ ] Video
+- [ ] File
+- [ ] To-do
+- [ ] Toggle
+- [ ] Table
+- [ ] Divider
+
+### Properties
+
+- [x] Property
+- [x] Checkbox
+- [x] Multi-select
+- [x] Select
+- [x] Text
+- [x] Title
+- [x] Description
+
+### Pages
 
 ## Installation
 
@@ -25,26 +39,34 @@ pip install secnex-notion-api
 ## Usage
 
 ```python
-from secnex_notion_api.api.client import NotionApiClient
-from secnex_notion_api.page import NotionPage
-from secnex_notion_api.block import NotionParagraph
+from notion import Client, Components, Properties
 
 import os
 
-client = NotionApiClient(token=os.getenv("NOTION_API_KEY"))
-
 def main():
-    pages = client.search(query="Site Name", filter={"value": "page", "property": "object"})
-    print(pages)
+    client = Client(token=os.getenv("NOTION_API_KEY"))
 
-    page_id = pages["results"][0]["id"]
-    print(page_id)
-    page = client.get_page_by_id(page_id)
-    print(page)
+    template_page = client.search(query="Tickets", filter={"property": "object", "value": "database"})
 
-    paragraph = NotionParagraph(parent_type="page", text=["Hello, world!"])
-    page = NotionPage(parent={"page_id": page_id}, title="Hello, world!", blocks=[paragraph], properties=pages["results"][0]["properties"])
-    print(page)
+    page = Components.Page(
+        parent=template_page["results"][0],
+        parent_type="database",
+        icon="👋",
+        properties=[
+            Properties.Property(field="Name", value="Test"),
+            Properties.Checkbox(field="Checkbox", value=True),
+            Properties.MultiSelect(field="Multi-select", value=[
+                Properties.MultiSelectOption(name="Test"),
+                Properties.MultiSelectOption(name="Test One", color="blue")
+            ]),
+            Properties.Select(field="Priority", value=Properties.SelectOption(name="Wow", color="blue"))
+        ],
+        blocks=[
+            Components.Paragraph(text=["Hello, world!"]),
+            Components.Callout(text="Hello, world!", icon="👋", color="default")
+        ]
+    )
+
     print(client.new(page))
 
 if __name__ == "__main__":
