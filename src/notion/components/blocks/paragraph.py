@@ -1,10 +1,8 @@
-class NotionParagraph:
-    parent_type: str
+class Paragraph:
     type: str
     text: list[str]
 
-    def __init__(self, parent_type: str, text: list[str], link: str = None) -> None:
-        self.parent_type = parent_type
+    def __init__(self, text: list[str], link: str = None) -> None:
         self.type = "paragraph"
         self.text = text
         self.link = link
