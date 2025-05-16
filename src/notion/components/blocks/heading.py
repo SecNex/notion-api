@@ -4,8 +4,7 @@ class Heading:
     type: str
     text: list[str]
 
-    def __init__(self, parent_type: str, level: int, text: list[str]) -> None:
-        self.parent_type = parent_type
+    def __init__(self, level: int, text: list[str]) -> None:
         self.level = level
         self.type = f"heading_{level}"
         self.text = text

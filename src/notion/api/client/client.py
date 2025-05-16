@@ -1,7 +1,7 @@
 import requests
 
 from ...components.page import Page
-from .endpoints import NOTION_SEARCH, NOTION_PAGE
+from .endpoints import NOTION_SEARCH, NOTION_PAGE, NOTION_BLOCK_CHILDREN
 
 class Client:
     def __init__(self, token: str) -> None:
@@ -75,4 +75,16 @@ class Client:
             }
         }
         response = requests.post(url, headers=headers, json=data)
+        return response.json()
+    
+    def get_block_children(self, block_id: str) -> dict:
+        url = NOTION_BLOCK_CHILDREN.format(block_id=block_id)
+
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json",
+            "Notion-Version": "2022-06-28",
+        }
+
+        response = requests.get(url, headers=headers)
         return response.json()
