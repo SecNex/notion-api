@@ -1,6 +1,4 @@
-from .paragraph import Paragraph
 from .heading import Heading
-from .callout import Callout
-from .code import Code
+from .blocks import Blocks, Block
 
-__all__ = ["Paragraph", "Heading", "Callout", "Code"]
+__all__ = ["Heading", "Blocks", "Block"]

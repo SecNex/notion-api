@@ -1,19 +1,13 @@
-class Heading:
-    parent_type: str
-    level: int
-    type: str
-    text: list[str]
+from src.notion.components.blocks.parent import BlockComponent
+from src.notion.components.blocks.rich_text import RichText
 
-    def __init__(self, level: int, text: list[str]) -> None:
-        self.level = level
-        self.type = f"heading_{level}"
-        self.text = text
+from typing import Any
 
-    def to_dict(self) -> dict:
-        return {
-            "object": "block",
-            "type": self.type,
-            self.type: {
-                "rich_text": [{"type": "text", "text": {"content": self.text}}]
-            }
-        }
+class Heading(BlockComponent):
+    def __init__(self, type: str, rich_text: list[dict], is_toggleable: bool = False, color: str = "default") -> None:
+        super().__init__()
+        self.type = type
+        self.rich_text = [RichText(**text) for text in rich_text]
+        self.is_toggleable = is_toggleable
+        self.color = color
+        self.level = int(type.split("_")[1])
