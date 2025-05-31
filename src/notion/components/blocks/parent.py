@@ -1,5 +1,3 @@
-from typing import Any  
-
 class Parent:
     def __init__(self, type: str, page_id: str = None, database_id: str = None, block_id: str = None, workspace: bool = False) -> None:
         self.type = type

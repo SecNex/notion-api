@@ -1,7 +1,7 @@
-from src.notion.components.user import User
-from src.notion.components.blocks import Heading
-from src.notion.components.blocks.component import BlockComponent
-from src.notion.components.blocks.parent import Parent
+from ..user import User
+from . import Heading, Paragraph
+from .component import BlockComponent
+from .parent import Parent
 from typing import Iterator
 
 class Block:
@@ -37,6 +37,8 @@ class Block:
     def __get_component(self) -> BlockComponent:
         if self.type.startswith("heading"):
             return Heading(type=self.type, **self.kwargs[self.type])
+        elif self.type == "paragraph":
+            return Paragraph(rich_text=self.kwargs[self.type]["rich_text"])
         else:
             return None
 

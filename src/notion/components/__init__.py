@@ -1,5 +1,5 @@
 from .page import *
 from .blocks import *
-from .blocks.parent import *
-
-__all__ = ["Page", "Blocks", "Block", "BlockComponent"]
+from .properties import *
+from .user import *
+from .icon import *

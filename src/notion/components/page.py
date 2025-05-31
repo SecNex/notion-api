@@ -1,7 +1,7 @@
-from src.notion.components.user import User
-from src.notion.components.icon import Icon
-from src.notion.components.blocks import Blocks, Block
-from src.notion.components.blocks.parent import Parent
+from .user import User
+from .icon import Icon
+from .blocks import Blocks, Parent
+from .properties import Property, Checkbox, Title, Select, MulitSelect, Number, Email, Url, Date, Verification, UniqueId
 
 from typing import Iterator
 
@@ -34,17 +34,47 @@ class Page:
         self.last_edited_by = last_edited_by
         self.cover = cover
         self.icon = icon
+        if self.icon:
+            self.icon = Icon(**self.icon)
         self.parent = Parent(**parent)
         self.archived = archived
         self.in_trash = in_trash
-        self.properties = properties
+        self.title = properties["Name"]["title"][0]["plain_text"]
+        self.properties = self.__get_properties(properties)
         self.url = url
         self.request_id = request_id
         self.public_url = public_url
         self.blocks = blocks
         self.kwargs = kwargs
-        self.title = self.properties["Name"]["title"][0]["plain_text"]
 
+    def __get_properties(self, properties: dict) -> list[Property]:
+        __properties = []
+        attributes = properties.keys()
+        for attribute in attributes:
+            if properties[attribute]["type"] == "checkbox":
+                __properties.append(Checkbox(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "email":
+                __properties.append(Email(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "title":
+                __properties.append(Title(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "select":
+                __properties.append(Select(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "multi_select":
+                __properties.append(MulitSelect(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "number":
+                __properties.append(Number(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "url":
+                __properties.append(Url(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "date":
+                __properties.append(Date(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "verification":
+                __properties.append(Verification(name=attribute, **properties[attribute]))
+            elif properties[attribute]["type"] == "unique_id":
+                __properties.append(UniqueId(name=attribute, **properties[attribute]))
+            else:
+                None
+        return __properties
+    
 class Pages:
     def __init__(self, pages: list[Page] = []) -> None:
         self.pages = pages

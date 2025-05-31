@@ -15,7 +15,15 @@ class Client:
             "Notion-Version": "2022-06-28",
         }
         response = requests.request(method, url, headers=headers, json=data)
-        return response.json()
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(response.json().get("message"))
+    
+    def get(self, id: str) -> Page:
+        url = NOTION_PAGE.format(id=id)
+        response = self.request(url, "GET")
+        return Page(**response)
     
     def search(self, query: str, filter: dict = None) -> Pages:
         url = NOTION_SEARCH

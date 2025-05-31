@@ -19,3 +19,6 @@ class RichText:
         self.plain_text = plain_text
         self.annotations = Annotations(**annotations) if annotations else None
         self.href = href
+
+    def __str__(self) -> str:
+        return self.plain_text
