@@ -1,9 +1,10 @@
 from src.notion.components.user import User
 from src.notion.components.icon import Icon
 from src.notion.components.blocks import Blocks, Block
+from src.notion.components.blocks.parent import Parent
 
 from typing import Iterator
-    
+
 class Page:
     def __init__(
             self, 
@@ -33,7 +34,7 @@ class Page:
         self.last_edited_by = last_edited_by
         self.cover = cover
         self.icon = icon
-        self.parent = parent
+        self.parent = Parent(**parent)
         self.archived = archived
         self.in_trash = in_trash
         self.properties = properties

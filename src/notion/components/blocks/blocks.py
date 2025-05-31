@@ -1,7 +1,7 @@
 from src.notion.components.user import User
 from src.notion.components.blocks import Heading
-from src.notion.components.blocks.parent import BlockComponent
-
+from src.notion.components.blocks.component import BlockComponent
+from src.notion.components.blocks.parent import Parent
 from typing import Iterator
 
 class Block:
@@ -23,7 +23,7 @@ class Block:
         self.object = object
         self.type = type
         self.id = id
-        self.parent = parent
+        self.parent = Parent(**parent)
         self.created_time = created_time
         self.last_edited_time = last_edited_time
         self.last_edited_by = last_edited_by
